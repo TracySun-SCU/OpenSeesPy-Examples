@@ -485,18 +485,22 @@ def run_time_history(direction = 'X', g_motion_id = 1, scaling_id = 1,
     """
     
     if direction == 'X':
-        file_names = ['TimeHistory_Horizontal_ReactionsX'+str(g_motion_id)+'.'+str(scaling_id)+'.out',
-                      'TimeHistory_Story_DisplacementX'+str(g_motion_id)+'.'+str(scaling_id)+'.out',
-                      'TimeHistory_Story_AccelerationX'+str(g_motion_id)+'.'+str(scaling_id)+'.out']
+        file_names = [
+            f'TimeHistory_Horizontal_ReactionsX{str(g_motion_id)}.{str(scaling_id)}.out',
+            f'TimeHistory_Story_DisplacementX{str(g_motion_id)}.{str(scaling_id)}.out',
+            f'TimeHistory_Story_AccelerationX{str(g_motion_id)}.{str(scaling_id)}.out',
+        ]
         omega = np.loadtxt(os.path.join('FGU_RC3DF_files', 'ModalAnalysis_Node_EigenVectors_EigenVal.out'),skiprows=1)[0,1]
-        d_o_f = 1        
+        d_o_f = 1
     else:
-        file_names = ['TimeHistory_Horizontal_ReactionsY'+str(g_motion_id)+'.'+str(scaling_id)+'.out',
-                      'TimeHistory_Story_DisplacementY'+str(g_motion_id)+'.'+str(scaling_id)+'.out',
-                      'TimeHistory_Story_AccelerationY'+str(g_motion_id)+'.'+str(scaling_id)+'.out']
+        file_names = [
+            f'TimeHistory_Horizontal_ReactionsY{str(g_motion_id)}.{str(scaling_id)}.out',
+            f'TimeHistory_Story_DisplacementY{str(g_motion_id)}.{str(scaling_id)}.out',
+            f'TimeHistory_Story_AccelerationY{str(g_motion_id)}.{str(scaling_id)}.out',
+        ]
         omega = np.loadtxt(os.path.join('FGU_RC3DF_files', 'ModalAnalysis_Node_EigenVectors_EigenVal.out'),skiprows=1)[2,1]
         d_o_f = 2    
-        
+
 
     ## Records the response of a number of nodes at every converged step
     # Global behaviour
@@ -512,7 +516,7 @@ def run_time_history(direction = 'X', g_motion_id = 1, scaling_id = 1,
     ops.recorder('Node','-file',
                 os.path.join('FGU_RC3DF_files', file_names[2]),
                 '-time','-node',*list(range(5,9)),'-dof',d_o_f,'accel')
- 
+
 
 
     # Reading omega for obraining Rayleigh damping model
@@ -574,14 +578,14 @@ def run_time_history(direction = 'X', g_motion_id = 1, scaling_id = 1,
 
         ok = ops.analyze(1, dt_analysis)
         t = ops.getTime()    
-        
+
     finish_time = time.time()
-    
+
     if ok == 0:
         print('Time-History Analysis in {} Done in {:1.2f} seconds'.format(direction, finish_time-start_time))
     else:
         print('Time-History Analysis in {} Failed in {:1.2f} seconds'.format(direction, finish_time-start_time))
-    
+
     ops.wipe()
 
 
